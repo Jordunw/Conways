@@ -4,6 +4,8 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Conway's Game of Life", sf::Style::Titlebar | sf::Style::Close);
 	GameOfLife game(&window);
 
+	int mouseX, mouseY;
+
 	while(window.isOpen()){
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -13,11 +15,19 @@ int main() {
 				break;
 			case sf::Event::KeyPressed:
 				switch (event.key.code) {
+				case sf::Keyboard::Enter:
+					game.calc();
+					break;
+				case sf::Keyboard::Delete:
+					game.clearCells();
+					break;
 				case sf::Keyboard::Num1:
-					static bool pressed = false;
-					pressed ? game.addCell(5, 5) : game.removeCell(5,5);
-					pressed = !pressed;
+					game.addGosperGun(game.getCell({ (float)mouseX, (float)mouseY }));
+					break;
 				}
+			case sf::Event::MouseMoved:
+				mouseX = event.mouseMove.x;
+				mouseY = event.mouseMove.y;
 				break;
 			case sf::Event::MouseButtonPressed:
 				switch (event.mouseButton.button) {
